@@ -12,11 +12,21 @@ $(document).ready(function() {
 		query = $('#search').val();
 		max_results = $('#max_results').val();
 		entities = $('#include_entities').attr('checked') ? true : false;
-		searchTwitter({
+		data = {
 			'query' : query,
 			'max_results' : max_results,
 			'include_entities' : entities
-		}, buildResultList);
+		};
+		/*
+		 * Loop the function
+		 */
+		if ($('#set_interval').attr('checked')) {
+			setInterval(function() {
+				searchTwitter(data, buildResultList);
+			}, 5000);
+		} else {
+			searchTwitter(data, buildResultList);
+		}
 	});
 	/*
 	 * Button to clear the display of results.
@@ -65,7 +75,7 @@ function searchTwitter(data, tweetHandler) {
 function prettyClear(jqObj) {
 	/*
 	 * Fades out an element gracefully.
-	 * 
+	 *
 	 * @method prettyClear
 	 * @param {String} jqObj jQuery object to clear
 	 */
@@ -78,7 +88,7 @@ function prettyClear(jqObj) {
 function prettyAppend(jqObjSrc, jqObjTarget) {
 	/*
 	 * Appends an element inside of another element gracefully.
-	 * 
+	 *
 	 * @method prettyAppend
 	 * @param {Object} jqObjSrc jQuery source object
 	 * @param {Object} jqObjTarget jQuery target object
@@ -91,7 +101,7 @@ function prettyAppend(jqObjSrc, jqObjTarget) {
 function buildResultList(tweet, geo) {
 	/*
 	 * Builds the list of results.
-	 * 
+	 *
 	 * @method buildResultList
 	 * @param {Object} tweet Tweet object.
 	 * @param {Object} geo Geocode object.
@@ -99,7 +109,7 @@ function buildResultList(tweet, geo) {
 	function packageObj(str, obj) {
 		/*
 		 * Packages an object as JSON into a div, along with a header div.
-		 * 
+		 *
 		 * @method packageObj
 		 * @param {String} str String to use for the heady of the JSON output
 		 * @param {Object} obj Object to stringify and represent as JSON data
